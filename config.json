@@ -1,3 +1,4 @@
 {
-    "update-warn": true
+  "update-warn": "false",
+  "download-path": "./downloads"
 }
