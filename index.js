@@ -1,13 +1,16 @@
 const chalk = require('chalk');
 var figlet = require('figlet');
-let dir;
 var args = process.argv.slice(2);
+require(`./commands/test`).run()
 switch (args[0]) {
     case 'help':
         helpMenu()
         break;
     case 'test':
         require(`./commands/test`).run()
+        break;
+    case 'dl':
+        console.log(`Need more coffee...`)
         break;
     default:
         console.log(`That is not a valid command`)

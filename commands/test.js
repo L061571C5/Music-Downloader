@@ -1,10 +1,14 @@
 const fetch = require('node-fetch');
+const chalk = require('chalk');
 const { version } = require('../package.json')
+const config = require(`../config.json`)
 module.exports = {
     async run() {
-        const data = await fetch(`https://raw.githubusercontent.com/L061571C5/Music-Downloader/main/package.json`)
-        const json = await data.json()
-        if (json.version !== version) return console.log(`This version is out of date, please update.`)
-        console.log(`This version ${version}, is the latest.`)
+        if (config['update-warn']) {
+            const data = await fetch(`https://raw.githubusercontent.com/L061571C5/Music-Downloader/main/package.json`)
+            const json = await data.json()
+            if (json.version !== version) console.log(chalk.redBright(`This version is out of date, please update when possible.`))
+            if (json.version !== version) console.log(chalk.greenBright(`You can remove this warning by setting update-warn to false in config.json.`))
+        }
     }
 }
