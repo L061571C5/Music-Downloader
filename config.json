@@ -1,4 +1,4 @@
 {
-  "update-warn": "false",
-  "download-path": "./downloads"
+    "update-warn": "true",
+    "download-path": "./downloads"
 }
