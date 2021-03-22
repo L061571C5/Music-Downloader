@@ -1,6 +1,6 @@
 {
   "name": "music-downloader",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "dependencies": {
     "chalk": "^4.1.0",
     "figlet": "^1.5.0",
