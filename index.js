@@ -18,8 +18,8 @@ switch (args[0]) {
         require(`./commands/config`).run(args)
         break;
     default:
-        console.log(`That is not a valid command`)
-        console.log(`Use 'node index.js help' to show list of available commands`)
+        console.log(chalk.redBright(`That is not a valid command`))
+        console.log(chalk.whiteBright(`Use 'node index.js help' to show list of available commands`))
         break;
 }
 function helpMenu() {
