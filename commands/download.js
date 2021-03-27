@@ -3,6 +3,7 @@ const fs = require('fs');
 const ytdl = require('ytdl-core');
 const ytpl = require("ytpl");
 const config = require(`../config.json`)
+const ytsr2 = require("youtube-sr").default;
 var path = require("path");
 module.exports = {
     async run(args) {
@@ -33,19 +34,29 @@ module.exports = {
                     }
                     return
                 }
-                const tracks = playlistInfo.items;
-                for (const track of tracks) {
+                const a = playlistInfo.items;
+                for (const track of a) {
                     ytdl(track.shortUrl, { "filter": 'audioonly' }).pipe(fs.createWriteStream(`${config['download-path']}/${(track.title).replace(/[<>:"/\\|?*\u0000-\u001F]/g, ``)}.mp3`));
                     console.log(chalk.whiteBright(`Downloaded ${track.title}.`))
                 }
                 break;
             case 2:
                 const track = (await ytdl.getBasicInfo(link)).videoDetails
-                ytdl(link, { "filter": 'audioonly' }).pipe(fs.createWriteStream(`${config['download-path']}/${track.title}.mp3`));
+                ytdl(link, { "filter": 'audioonly' }).pipe(fs.createWriteStream(`${config['download-path']}/${(track.title).replace(/[<>:"/\\|?*\u0000-\u001F]/g, ``)}.mp3`));
                 console.log(chalk.whiteBright(`Downloaded ${track.title}.`))
                 break;
             default:
-                console.log(`Query goes here at somepoint...`)
+                const tracks = await ytsr2.search(args.join(` `), { limit: 1 }).catch(async function () {
+                    await console.log(chalk.redBright('there was a problem searching the video you requested!'));
+                    return;
+                });
+                if (tracks.length < 1 || !tracks) {
+                    console.log(chalk.redBright(`There was some trouble finding what you were looking for, please try again or be more specific.`));
+                    return;
+                }
+                const length = Math.round(tracks[0].duration / 1000);
+                ytdl(`https://www.youtube.com/watch?v=${tracks[0].id}`, { "filter": 'audioonly' }).pipe(fs.createWriteStream(`${config['download-path']}/${(tracks[0].title).replace(/[<>:"/\\|?*\u0000-\u001F]/g, ``)}.mp3`));
+                console.log(chalk.whiteBright(`Downloaded ${tracks[0].title}.`))
                 break;
         }
         console.log(chalk.greenBright(`Your downloads have finished in`, path.resolve(config['download-path'])))

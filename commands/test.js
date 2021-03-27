@@ -10,6 +10,8 @@ module.exports = {
             if (json.version != version) {
                 console.log(chalk.redBright(`This version is out of date, please update when possible.`))
                 console.log(chalk.greenBright(`You can remove this warning by setting update-warn to false in config.json.`))
+            } else {
+                console.log(chalk.greenBright(`This version is up to date.`))
             }
         }
     }
