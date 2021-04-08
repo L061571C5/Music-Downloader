@@ -30,5 +30,5 @@ function helpMenu() {
     console.log(chalk.whiteBright(`dl: Downloads music from supported sites...`))
     console.log(chalk.whiteBright(`config: Configure the downloader's settings`))
     console.log(chalk.greenBright(`Downloader Usage:`))
-    console.log(chalk.whiteBright(`node index.js dl (url or query) [options]`))
+    console.log(chalk.whiteBright(`node index.js dl (url or query)`))
 }
