@@ -10,12 +10,20 @@ const cheerio = require('cheerio');
 const makeDir = require('make-dir');
 const { exit } = require('process');
 const request = require('request');
+var snoowrap = require('snoowrap');
+const r = new snoowrap({
+    userAgent: 'put your user-agent string here',
+    clientId: 'put your client id here',
+    clientSecret: 'put your client secret here',
+    refreshToken: 'put your refresh token here'
+});
 module.exports = {
     async run(args) {
         let type = -1;
         if (this.validYTPlaylistURL(args[0])) type = 1
         else if (this.validYTURL(args[0])) type = 2
         else if (this.validKHURL(args[0])) type = 3
+        else if (args[0] == 'reddit') type = 4
         if (this.validYTURL(args[0]) == false && type === -1) {
             console.log(chalk.greenBright(`Downloader Usage:`))
             return console.log(chalk.whiteBright(`node index.js dl (url or query) [options]`))
@@ -151,6 +159,9 @@ module.exports = {
                         await callback(array[index], index, array);
                     }
                 }
+                break;
+            case 4:
+
                 break;
             default:
                 const tracks = await ytsr2.search(args.join(` `), { limit: 1 }).catch(async function () {
