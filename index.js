@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 var figlet = require('figlet');
 let args = process.argv.slice(2);
+require('dotenv').config()
 require(`./commands/test`).run()
 switch (args[0]) {
     case 'help':
