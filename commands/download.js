@@ -19,12 +19,12 @@ const r = new snoowrap({
 });
 module.exports = {
     async run(args) {
-        let type = -1;
+        let type = 0;
         if (this.validYTPlaylistURL(args[0])) type = 1
         else if (this.validYTURL(args[0])) type = 2
         else if (this.validKHURL(args[0])) type = 3
         else if (args[0] == 'reddit') type = 4
-        if (this.validYTURL(args[0]) == false && type === -1) {
+        if (this.validYTURL(args[0]) == false && args.length <= 2) {
             console.log(chalk.greenBright(`Downloader Usage:`))
             return console.log(chalk.whiteBright(`node index.js dl (url or query) [options]`))
         }
