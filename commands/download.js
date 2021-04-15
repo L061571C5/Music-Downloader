@@ -165,7 +165,7 @@ module.exports = {
                 break;
             default:
                 const tracks = await ytsr2.search(args.join(` `), { limit: 1 }).catch(async function () {
-                 console.log(chalk.redBright('there was a problem searching the video you requested!'));
+                    console.log(chalk.redBright('there was a problem searching the video you requested!'));
                     return;
                 });
                 if (tracks.length < 1 || !tracks) {
