@@ -164,7 +164,7 @@ module.exports = {
 
                 break;
             default:
-                const tracks = await ytsr2.search(args.join(` `), { limit: 1 }).catch(async function () {
+                const tracks = await ytsr2.search(args.join(` `), { limit: 30 }).catch(async function () {
                     console.log(chalk.redBright('there was a problem searching the video you requested!'));
                     return;
                 });
@@ -172,9 +172,17 @@ module.exports = {
                     console.log(chalk.redBright(`There was some trouble finding what you were looking for, please try again or be more specific.`));
                     return;
                 }
-                const length = Math.round(tracks[0].duration / 1000);
-                ytdl(`https://www.youtube.com/watch?v=${tracks[0].id}`, { "filter": 'audioonly' }).pipe(fs.createWriteStream(`${config['download-path']}/${(tracks[0].title).replace(/[<>:"/\\|?*\u0000-\u001F]/g, ``)}.mp3`));
-                console.log(chalk.whiteBright(`Downloaded ${tracks[0].title}.`))
+                var o =0
+                for (var s = 0; s < tracks.length; s++) {
+                if (this.isGoodMusicVideoContent(tracks[s])) {
+o = so = s;
+s = tracks.length - 1;
+                }
+                if (s + 1 == tracks.length) {
+                    ytdl(`https://www.youtube.com/watch?v=${tracks[o].id}`, { "filter": 'audioonly' }).pipe(fs.createWriteStream(`${config['download-path']}/${(tracks[0].title).replace(/[<>:"/\\|?*\u0000-\u001F]/g, ``)}.mp3`));
+                console.log(chalk.whiteBright(`Downloaded ${tracks[o].title}.`))
+                }
+            }
                 break;
         }
         console.log(chalk.greenBright(`Your downloads have finished in`, path.resolve(config['download-path'])))
@@ -182,5 +190,9 @@ module.exports = {
     validYTURL: (str) => !!str.match(/^(https?:\/\/)?((w){3}.)?youtu(be|.be)?(.com)?\/.+/),
     validYTPlaylistURL: (str) => !!str.match(/^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(.com)?\/playlist\?list=\w+/),
     validSPURL: (str) => !!str.match(/open.spotify.com\/.*/),
-    validKHURL: (str) => !!str.includes('downloads.khinsider.com')
+    validKHURL: (str) => !!str.includes('downloads.khinsider.com'),
+    isGoodMusicVideoContent(videoSearchResultItem) {
+        const contains = (string, content) => !!~(string || "").indexOf(content);
+        return (contains(videoSearchResultItem.author ? videoSearchResultItem.author.name : undefined, "VEVO") || contains(videoSearchResultItem.author ? videoSearchResultItem.author.name.toLowerCase() : undefined, "official") || contains(videoSearchResultItem.title.toLowerCase(), "official") || !contains(videoSearchResultItem.title.toLowerCase(), "extended"));
+    },
 }
